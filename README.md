@@ -5,7 +5,7 @@ to detect modification, and hence create a new AWS::Lambda::Version resource aut
 
 This leaves updates to a Lambda function being made only to $LATEST, rather than create a new version.  
 
-This is demonstrated by the [not working CloudFormation template](), which creates a HelloWorld Lambda function.  
+This is demonstrated by the [not working CloudFormation template](https://github.com/geoff-possum/lambda-versioning/blob/master/versioning_not_working.cform), which creates a HelloWorld Lambda function.  
 Changing any of the code or configuration leaves the Output version arn unchanged.
 
 ## Approach
@@ -18,10 +18,10 @@ Custom Resources, both backed by Lambda Functions:
 * Second, the hash is passed to a version creator, so a change in the hash always triggers a new version 
 
 The implementations are in Python and can be found in the python folder of this project.  These are created
-via the CloudFormation template [custom_resource_lambdas.cform"](), and generate Exports which can then be
+via the CloudFormation template [custom_resource_lambdas.cform"](https://github.com/geoff-possum/lambda-versioning/blob/master/custom_resource_lambdas.cform), and generate Exports which can then be
 imported to other templates.
 
-The revised CloudFormation [template]() to manage versions on the HelloWorld Lambda function now includes two 
+The revised CloudFormation [template](https://github.com/geoff-possum/lambda-versioning/blob/master/versioning_working.cform) to manage versions on the HelloWorld Lambda function now includes two 
 Custom Resources, `Hasher` and `VersionCreator`, which invoke the exported lambdas to perform hashing and
 version creation respectively.  The hasher lambda reflects back its properties, which can then be used to
 specify the HelloWorld Lambda resource - this approach ensuring that the hash and Lambda function are kept
